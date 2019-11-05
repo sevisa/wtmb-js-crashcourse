@@ -1,20 +1,27 @@
-const Person = require('./person')
-const Meetup = require('./meetup')
-const Chalk = require('chalk')
 const Database = require('./database')
+const Meetup = require('./meetup')
+const Person = require('./person')
 
-const armagan = new Person("Armagan", 35)
-const mert = new Person("Mert", 34)
+const stuffToDoAfterLoadingDataBase = (err, loadedFile) => {
+  if (err) {
+    console.log('hey, an error occured', err)
+    return
+  }
+  console.log('hello')
 
-const wtmb = new Meetup("Women Techmakers Berlin")
+  const wtmb = Meetup.create(loadedFile)
+  const onur = new Person('Juan', 38)
+  onur.attend(wtmb)
+  wtmb.printAttendeeNames()
+  console.log(wtmb.name)
+}
 
-armagan.attend(wtmb)
-mert.attend(wtmb)
-wtmb.printAttendeeNames()
+Database.load('meetup.json',stuffToDoAfterLoadingDataBase)
+console.log('am i the last ?')
 
-console.log(Chalk.blue.bgRed.bold(wtmb.name))
 
-Database.save('meetup.json', wtmb)
 
-const loadedFile = Database.load('meetup.json')
-console.log(loadedFile.name)
+
+// const loadedFile = Database.load('meetup.json')
+
+
